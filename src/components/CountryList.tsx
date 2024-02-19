@@ -1,67 +1,109 @@
-// src/components/CountryList.tsx
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_COUNTRIES } from '../graphql/queries';
 
-interface Props {
-  filter: string;
+interface Country {
+  code: string;
+  name: string;
+  continent: { name: string };
+  languages: { name: string }[];
 }
 
-const selectionColors = [
-  'lightblue',
-  'lightgreen',
-  'lightcoral',
-  'lightgoldenrodyellow',
-  'lightpink',
-];
+interface Props {
+  filter: string;
+  group: string;
+}
 
-const CountryList: React.FC<Props> = ({ filter }) => {
+const CountryList: React.FC<Props> = ({ filter, group }) => {
   const { data, loading, error } = useQuery(GET_COUNTRIES);
   const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(
     null
   );
   const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
+  const selectionColors = [
+    'lightblue',
+    'lightgreen',
+    'lightcoral',
+    'lightgoldenrodyellow',
+    'lightpink',
+  ];
 
   useEffect(() => {
-    // This effect will run every time `filteredCountries` changes,
-    // which includes the initial data loading as well as any subsequent filter updates.
-    const autoSelectIndex = Math.min(10, data?.countries?.length || 0) - 1;
     if (data?.countries?.length) {
+      const autoSelectIndex = Math.min(10, data.countries.length) - 1;
       setSelectedCountryCode(data.countries[autoSelectIndex].code);
+      setSelectedColorIndex(autoSelectIndex % selectionColors.length);
     }
-  }, [data]); // Dependency on `data` because it's what we're checking to update the selected country
+  }, [data]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  const filteredCountries = data.countries.filter((country: { name: string }) =>
-    country.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  let displayedCountries = data.countries;
 
-  const handleCountryClick = (code: string, index: number) => {
-    setSelectedCountryCode(selectedCountryCode === code ? null : code);
-    setSelectedColorIndex(index % selectionColors.length);
+  // Apply filter if there is a search term
+  if (filter) {
+    displayedCountries = displayedCountries.filter((country: Country) =>
+      country.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  }
+
+  // Group by continent or limit the number of displayed countries
+  if (group) {
+    if (!isNaN(Number(group))) {
+      // If group is numeric, limit the number of displayed countries
+      displayedCountries = displayedCountries.slice(0, parseInt(group, 10));
+    } else {
+      // If group is a string, assume it's a continent name and filter by it
+      displayedCountries = displayedCountries.filter(
+        (country: Country) =>
+          country.continent.name.toLowerCase() === group.toLowerCase()
+      );
+    }
+  }
+
+  const handleCountryClick = (code: string) => {
+    // Check if the clicked country is already selected
+    if (selectedCountryCode === code) {
+      // If so, clear the selection
+      setSelectedCountryCode(null);
+      setSelectedColorIndex(0); // Reset the color index if needed, or handle this differently depending on your design
+    } else {
+      // If it's not already selected, select it
+      setSelectedCountryCode(code);
+      const index = displayedCountries.findIndex(
+        (country: Country) => country.code === code
+      );
+      setSelectedColorIndex(index % selectionColors.length);
+    }
   };
 
   return (
-    <ul>
-      {filteredCountries.map(
-        (country: { code: string; name: string }, index: number) => (
-          <li
-            key={country.code}
-            onClick={() => handleCountryClick(country.code, index)}
-            style={{
-              backgroundColor:
-                selectedCountryCode === country.code
-                  ? selectionColors[selectedColorIndex]
-                  : 'transparent',
-            }}
-          >
-            {country.name}
-          </li>
-        )
+    <div>
+      {displayedCountries.length > 0 ? (
+        <ul>
+          {displayedCountries.map((country: Country, index: number) => (
+            <li
+              key={country.code}
+              onClick={() => handleCountryClick(country.code)}
+              style={{
+                backgroundColor:
+                  selectedCountryCode === country.code
+                    ? selectionColors[selectedColorIndex]
+                    : 'transparent',
+                cursor: 'pointer',
+                padding: '5px',
+                margin: '2px 0',
+              }}
+            >
+              {country.name}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No countries found matching your search criteria.</p> // This line provides feedback when no countries match the search.
       )}
-    </ul>
+    </div>
   );
 };
 

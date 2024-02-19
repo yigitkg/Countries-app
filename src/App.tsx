@@ -6,9 +6,11 @@ import SearchFilter from './components/SearchFilter';
 
 const App: React.FC = () => {
   const [filter, setFilter] = useState('');
+  const [group, setGroup] = useState('');
 
-  const handleFilterChange = (newFilter: string) => {
+  const handleFilterChange = (newFilter: string, newGroup: string) => {
     setFilter(newFilter);
+    setGroup(newGroup);
   };
 
   return (
@@ -16,9 +18,7 @@ const App: React.FC = () => {
       <main className="App-header">
         <h1>Countries List</h1>
         <SearchFilter onFilterChange={handleFilterChange} />
-        <div>
-          <CountryList filter={filter} />
-        </div>
+        <CountryList filter={filter} group={group} />
       </main>
     </div>
   );

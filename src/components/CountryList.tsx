@@ -7,11 +7,20 @@ interface Props {
   filter: string;
 }
 
+const selectionColors = [
+  'lightblue',
+  'lightgreen',
+  'lightcoral',
+  'lightgoldenrodyellow',
+  'lightpink',
+];
+
 const CountryList: React.FC<Props> = ({ filter }) => {
   const { data, loading, error } = useQuery(GET_COUNTRIES);
   const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(
     null
   );
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
 
   useEffect(() => {
     // This effect will run every time `filteredCountries` changes,
@@ -29,26 +38,29 @@ const CountryList: React.FC<Props> = ({ filter }) => {
     country.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const handleCountryClick = (code: string) => {
+  const handleCountryClick = (code: string, index: number) => {
     setSelectedCountryCode(selectedCountryCode === code ? null : code);
+    setSelectedColorIndex(index % selectionColors.length);
   };
 
   return (
     <ul>
-      {filteredCountries.map((country: { code: string; name: string }) => (
-        <li
-          key={country.code}
-          onClick={() => handleCountryClick(country.code)}
-          style={{
-            backgroundColor:
-              selectedCountryCode === country.code
-                ? 'lightgray'
-                : 'transparent',
-          }}
-        >
-          {country.name}
-        </li>
-      ))}
+      {filteredCountries.map(
+        (country: { code: string; name: string }, index: number) => (
+          <li
+            key={country.code}
+            onClick={() => handleCountryClick(country.code, index)}
+            style={{
+              backgroundColor:
+                selectedCountryCode === country.code
+                  ? selectionColors[selectedColorIndex]
+                  : 'transparent',
+            }}
+          >
+            {country.name}
+          </li>
+        )
+      )}
     </ul>
   );
 };

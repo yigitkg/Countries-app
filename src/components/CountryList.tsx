@@ -33,7 +33,7 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
     'asia',
     'europe',
     'north america',
-    'oceania',
+    'australia',
     'south america',
   ];
 
@@ -65,22 +65,15 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
       displayedCountries = displayedCountries.slice(0, parseInt(group, 10));
     } else {
       const groupLower = group.toLowerCase();
-      console.log('groupLower', groupLower);
       isContinentGroup = continents.includes(groupLower);
-      console.log('isContinentGroup', isContinentGroup);
       // If group is a string, assume it's a continent name and filter by it
-      if (isContinentGroup) {
-        console.log('isContinentGroup', isContinentGroup);
-        displayedCountries = displayedCountries.filter(
-          (country: Country) =>
-            country.continent.name.toLowerCase() === group.toLowerCase()
-        );
-      } else {
-        displayedCountries = displayedCountries.filter(
-          (country: Country) =>
-            country.languages[0].name.toLowerCase() === group.toLowerCase()
-        );
-      }
+      displayedCountries = displayedCountries.filter(
+        (country: Country) =>
+          (isContinentGroup
+            ? country.continent.name
+            : country.languages[0].name
+          ).toLowerCase() === group.toLowerCase()
+      );
     }
   }
 

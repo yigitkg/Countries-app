@@ -45,12 +45,6 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
       if (autoSelectIndex < 0) autoSelectIndex = 0;
       if (displayedCountries.size < 10)
         autoSelectIndex = displayedCountries.size - 1;
-      console.log(
-        'displayedCountries.size, ',
-        displayedCountries.size,
-        'autoSelectIndex',
-        autoSelectIndex
-      );
       setSelectedCountryCode(displayedCountries[autoSelectIndex].code);
       setSelectedColorIndex(autoSelectIndex % selectionColors.length);
     }

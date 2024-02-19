@@ -27,6 +27,15 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
     'lightgoldenrodyellow',
     'lightpink',
   ];
+  const continents = [
+    'africa',
+    'antarctica',
+    'asia',
+    'europe',
+    'north america',
+    'oceania',
+    'south america',
+  ];
 
   useEffect(() => {
     if (data?.countries?.length) {
@@ -40,6 +49,7 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
   if (error) return <p>Error :(</p>;
 
   let displayedCountries = data.countries;
+  let isContinentGroup = false;
 
   // Apply filter if there is a search term
   if (filter) {
@@ -54,11 +64,23 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
       // If group is numeric, limit the number of displayed countries
       displayedCountries = displayedCountries.slice(0, parseInt(group, 10));
     } else {
+      const groupLower = group.toLowerCase();
+      console.log('groupLower', groupLower);
+      isContinentGroup = continents.includes(groupLower);
+      console.log('isContinentGroup', isContinentGroup);
       // If group is a string, assume it's a continent name and filter by it
-      displayedCountries = displayedCountries.filter(
-        (country: Country) =>
-          country.continent.name.toLowerCase() === group.toLowerCase()
-      );
+      if (isContinentGroup) {
+        console.log('isContinentGroup', isContinentGroup);
+        displayedCountries = displayedCountries.filter(
+          (country: Country) =>
+            country.continent.name.toLowerCase() === group.toLowerCase()
+        );
+      } else {
+        displayedCountries = displayedCountries.filter(
+          (country: Country) =>
+            country.languages[0].name.toLowerCase() === group.toLowerCase()
+        );
+      }
     }
   }
 

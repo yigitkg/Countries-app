@@ -37,18 +37,28 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
     'south america',
   ];
 
+  let displayedCountries = data?.countries;
+
   useEffect(() => {
     if (data?.countries?.length) {
-      const autoSelectIndex = Math.min(10, data.countries.length) - 1;
-      setSelectedCountryCode(data.countries[autoSelectIndex].code);
+      let autoSelectIndex = Math.min(10, displayedCountries.length) - 1;
+      if (autoSelectIndex < 0) autoSelectIndex = 0;
+      if (displayedCountries.size < 10)
+        autoSelectIndex = displayedCountries.size - 1;
+      console.log(
+        'displayedCountries.size, ',
+        displayedCountries.size,
+        'autoSelectIndex',
+        autoSelectIndex
+      );
+      setSelectedCountryCode(displayedCountries[autoSelectIndex].code);
       setSelectedColorIndex(autoSelectIndex % selectionColors.length);
     }
-  }, [data]);
+  }, [displayedCountries, group]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  let displayedCountries = data.countries;
   let isContinentGroup = false;
 
   // Apply filter if there is a search term
@@ -64,15 +74,15 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
       // If group is numeric, limit the number of displayed countries
       displayedCountries = displayedCountries.slice(0, parseInt(group, 10));
     } else {
-      const groupLower = group.toLowerCase();
+      const groupLower = group?.toLowerCase();
       isContinentGroup = continents.includes(groupLower);
       // If group is a string, assume it's a continent name and filter by it
       displayedCountries = displayedCountries.filter(
         (country: Country) =>
           (isContinentGroup
-            ? country.continent.name
-            : country.languages[0].name
-          ).toLowerCase() === group.toLowerCase()
+            ? country?.continent.name
+            : country?.languages[0].name
+          ).toLowerCase() === groupLower
       );
     }
   }

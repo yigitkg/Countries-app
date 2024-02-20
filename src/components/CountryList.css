@@ -10,7 +10,7 @@
 }
 
 .country-list li {
-  width: 100%;
+  width: 560px;
   color: white;
   padding: 10px 20px; /* Add horizontal padding */
   margin: 10px 0;
@@ -28,6 +28,7 @@
 
 @media (max-width: 768px) {
   .country-list li {
+    width: 280px;
     font-size: 14px; /* smaller text on small screens */
   }
 }

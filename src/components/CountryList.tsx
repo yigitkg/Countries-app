@@ -18,6 +18,7 @@ interface Props {
 
 const CountryList: React.FC<Props> = ({ filter, group }) => {
   const { data, loading, error } = useQuery(GET_COUNTRIES);
+
   const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(
     null
   );
@@ -48,10 +49,17 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
       if (autoSelectIndex < 0) autoSelectIndex = 0;
       if (displayedCountries.size < 10)
         autoSelectIndex = displayedCountries.size - 1;
-      setSelectedCountryCode(displayedCountries[autoSelectIndex].code);
+      console.log(displayedCountries[autoSelectIndex]);
+      setSelectedCountryCode(displayedCountries[autoSelectIndex]?.code);
       setSelectedColorIndex(autoSelectIndex % selectionColors.length);
     }
-  }, [displayedCountries, group, filter]);
+  }, [
+    displayedCountries,
+    group,
+    filter,
+    data?.countries?.length,
+    selectionColors.length,
+  ]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;

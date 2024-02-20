@@ -1,4 +1,3 @@
-// src/App.tsx
 import React, { useState } from 'react';
 import './App.css';
 import CountryList from './components/CountryList';

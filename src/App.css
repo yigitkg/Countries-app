@@ -14,9 +14,25 @@
   color: white;
 }
 
+.App-header h1 {
+  font-size: 2.8rem; /* Large and readable font size */
+  color: #4caf50; /* Color that stands out */
+  text-transform: uppercase; /* Make the text uppercase for stylistic preference */
+  margin: 20px 0; /* Space above and below the h1 element */
+  letter-spacing: 1.5px; /* Add some spacing between letters */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle text shadow for depth */
+}
+
+.h1 {
+  font-size: medium;
+}
+
 @media (max-width: 768px) {
   .App-header {
     padding: 10px; /* Add padding on smaller screens */
+  }
+  .App-header h1 {
+    font-size: 2rem; /* Smaller font size for smaller screens */
   }
 }
 

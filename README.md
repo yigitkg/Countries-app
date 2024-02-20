@@ -20,8 +20,10 @@ Users can search by country name and apply filters based on continent, language,
   
 ## Installation
 
-git clone (https://github.com/yigitkg/Countries-app.git)
+git clone https://github.com/yigitkg/Countries-app.git
+
 cd Countries-app
+
 ### `npm install`
 
 Running the Application

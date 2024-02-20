@@ -1,4 +1,7 @@
 /* CountryList.css */
+.country-list-main-component {
+  padding-right: 40px;
+}
 .country-list ul {
   list-style-type: none; /* This line removes the bullet points */
   padding: 0;
@@ -7,7 +10,7 @@
 }
 
 .country-list li {
-  background-color: #282c34;
+  width: 100%;
   color: white;
   padding: 10px 20px; /* Add horizontal padding */
   margin: 10px 0;

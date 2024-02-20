@@ -101,7 +101,7 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
   };
 
   return (
-    <div>
+    <div className="country-list-main-component">
       {displayedCountries.length > 0 ? (
         <ul className="country-list">
           {displayedCountries.map((country: Country) => {

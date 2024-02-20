@@ -1,3 +1,4 @@
+// src/components/SearchFilter.tsx
 import React, { useState } from 'react';
 import './SearchFilter.css';
 

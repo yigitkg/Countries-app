@@ -1,0 +1,30 @@
+/* CountryList.css */
+.country-list ul {
+  list-style-type: none; /* This line removes the bullet points */
+  padding: 0;
+  max-width: 600px; /* Adjust width as needed */
+  margin: auto;
+}
+
+.country-list li {
+  background-color: #282c34;
+  color: white;
+  padding: 10px 20px; /* Add horizontal padding */
+  margin: 10px 0;
+  border: 1px solid #ffffff30;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  list-style-type: none;
+  background-color: var(--selected-bg-color, #282c34);
+}
+
+.country-list li.selected {
+  color: #282c34 !important; /* Dark text color for contrast */
+}
+
+@media (max-width: 768px) {
+  .country-list li {
+    font-size: 14px; /* smaller text on small screens */
+  }
+}

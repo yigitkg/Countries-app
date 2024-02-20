@@ -1,5 +1,6 @@
 // src/components/SearchFilter.tsx
 import React, { useState } from 'react';
+import './SearchFilter.css';
 
 interface Props {
   onFilterChange: (filter: string, group: string) => void;

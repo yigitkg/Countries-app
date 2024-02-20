@@ -1,6 +1,8 @@
+// src/components/CountryList.tsx
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_COUNTRIES } from '../graphql/queries';
+import './CountryList.css';
 
 interface Country {
   code: string;
@@ -42,13 +44,14 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
   useEffect(() => {
     if (data?.countries?.length) {
       let autoSelectIndex = Math.min(10, displayedCountries.length) - 1;
+      console.log('autoSelectIndex', autoSelectIndex);
       if (autoSelectIndex < 0) autoSelectIndex = 0;
       if (displayedCountries.size < 10)
         autoSelectIndex = displayedCountries.size - 1;
       setSelectedCountryCode(displayedCountries[autoSelectIndex].code);
       setSelectedColorIndex(autoSelectIndex % selectionColors.length);
     }
-  }, [displayedCountries, group]);
+  }, [displayedCountries, group, filter]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
@@ -100,27 +103,26 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
   return (
     <div>
       {displayedCountries.length > 0 ? (
-        <ul>
-          {displayedCountries.map((country: Country, index: number) => (
-            <li
-              key={country.code}
-              onClick={() => handleCountryClick(country.code)}
-              style={{
-                backgroundColor:
-                  selectedCountryCode === country.code
-                    ? selectionColors[selectedColorIndex]
-                    : 'transparent',
-                cursor: 'pointer',
-                padding: '5px',
-                margin: '2px 0',
-              }}
-            >
-              {country.name}
-            </li>
-          ))}
+        <ul className="country-list">
+          {displayedCountries.map((country: Country) => {
+            const isSelected = selectedCountryCode === country.code;
+            const style = isSelected
+              ? { '--selected-bg-color': selectionColors[selectedColorIndex] }
+              : {};
+            return (
+              <li
+                key={country.code}
+                onClick={() => handleCountryClick(country.code)}
+                style={style as React.CSSProperties} // Type casting for TypeScript
+                className={isSelected ? 'selected' : ''}
+              >
+                {country.name}
+              </li>
+            );
+          })}
         </ul>
       ) : (
-        <p>No countries found matching your search criteria.</p> // This line provides feedback when no countries match the search.
+        <p>No countries found matching your search criteria.</p>
       )}
     </div>
   );

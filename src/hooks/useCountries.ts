@@ -29,7 +29,7 @@ const continents = [
   'asia',
   'europe',
   'north america',
-  'oceania',
+  'australia',
   'south america',
 ];
 

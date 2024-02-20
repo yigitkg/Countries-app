@@ -23,6 +23,16 @@ const selectionColors = [
   'lightpink',
 ];
 
+const continents = [
+  'africa',
+  'antarctica',
+  'asia',
+  'europe',
+  'north america',
+  'oceania',
+  'south america',
+];
+
 export const useCountries = ({ filter, group }: UseCountriesProps) => {
   const { data, loading, error } = useQuery(GET_COUNTRIES);
   const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(
@@ -43,9 +53,13 @@ export const useCountries = ({ filter, group }: UseCountriesProps) => {
         countries = countries.slice(0, parseInt(group, 10));
       } else {
         const groupLower = group.toLowerCase();
+        let isContinentGroup = continents.includes(groupLower);
         countries = countries.filter(
           (country: Country) =>
-            country.continent.name.toLowerCase() === groupLower
+            (isContinentGroup
+              ? country.continent.name
+              : country.languages[0].name
+            ).toLowerCase() === group.toLowerCase()
         );
       }
     }

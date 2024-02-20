@@ -25,13 +25,20 @@ const SearchFilter: React.FC<Props> = ({ onFilterChange }) => {
     onFilterChange(filter, group);
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
-    <div>
+    <div className="search-filter">
       <input
         type="text"
         placeholder="Search countries..."
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+        onKeyPress={handleKeyPress}
       />
       <button onClick={handleSearch}>Search</button>
     </div>

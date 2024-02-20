@@ -1,4 +1,3 @@
-// src/components/SearchFilter.tsx
 import React, { useState } from 'react';
 import './SearchFilter.css';
 
@@ -12,23 +11,25 @@ const SearchFilter: React.FC<Props> = ({ onFilterChange }) => {
   const handleSearch = () => {
     let filter = '';
     let group = '';
-
-    // Split the input value by 'group:' if present
     const parts = inputValue.split(' group:');
     if (parts.length === 2) {
       filter = parts[0].trim();
       group = parts[1].trim();
     } else {
-      filter = inputValue.trim(); // Trim the input to avoid white space issues
+      filter = inputValue.trim();
     }
-
     onFilterChange(filter, group);
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
+  };
+
+  const handleReset = () => {
+    setInputValue('');
+    onFilterChange('', '');
   };
 
   return (
@@ -41,6 +42,9 @@ const SearchFilter: React.FC<Props> = ({ onFilterChange }) => {
         onKeyPress={handleKeyPress}
       />
       <button onClick={handleSearch}>Search</button>
+      <button onClick={handleReset} className="reset">
+        Reset
+      </button>
     </div>
   );
 };

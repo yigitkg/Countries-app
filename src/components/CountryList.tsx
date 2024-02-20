@@ -43,7 +43,7 @@ const CountryList: React.FC<Props> = ({ filter, group }) => {
                 style={getCountryStyle(country.code, index)}
                 className={
                   country.code === selectedCountryCode ? 'selected' : ''
-                } // This should work now
+                }
               >
                 {country.name}
               </li>

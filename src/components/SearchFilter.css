@@ -24,7 +24,6 @@
   padding: 10px 20px;
   border: 2px solid transparent;
   border-radius: 4px;
-  background-color: #4caf50;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -32,11 +31,15 @@
   outline: none;
 }
 
-.search-filter button:hover {
+.search-filter button.search:hover {
   background-color: #369f47;
 }
 
-.search-filter button:focus {
+.search-filter button.search {
+  background-color: #4caf50;
+}
+
+.search-filter button.search:focus {
   border-color: #4caf50;
 }
 

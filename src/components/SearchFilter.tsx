@@ -41,7 +41,9 @@ const SearchFilter: React.FC<Props> = ({ onFilterChange }) => {
         onChange={(e) => setInputValue(e.target.value)}
         onKeyPress={handleKeyPress}
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} className="search">
+        Search
+      </button>
       <button onClick={handleReset} className="reset">
         Reset
       </button>
